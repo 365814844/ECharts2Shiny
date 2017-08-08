@@ -14,7 +14,8 @@ renderLineChart <- function(div_id,
                             rotate.axis.x = 0, rotate.axis.y = 0,
                             show.slider.axis.x = FALSE, show.slider.axis.y = FALSE,
                             animation = TRUE,
-                            running_in_shiny = TRUE){
+                            running_in_shiny = TRUE,
+							scale = TRUE){
 
   data <- isolate(data)
 
@@ -22,7 +23,7 @@ renderLineChart <- function(div_id,
 
   # Check logical variables (whether they're logical)
   .check_logical(c('stack_plot', 'show.tools', 'show.legend', 'animation',
-                   'show.slider.axis.x', 'show.slider.axis.y', 'running_in_shiny'))
+                   'show.slider.axis.x', 'show.slider.axis.y', 'running_in_shiny','scale'))
 
   # check the type of line.width
   if((class(line.width) %in% c("numeric", "integer")) == FALSE){
@@ -92,6 +93,7 @@ renderLineChart <- function(div_id,
   # Check the value for theme
   theme_placeholder <- .theme_placeholder(theme)
 
+  
   xaxis_name <- paste(sapply(row.names(data), function(x){paste("'", x, "'", sep="")}), collapse=", ")
   xaxis_name <- paste("[", xaxis_name, "]", sep="")
   legend_name <- paste(sapply(names(data), function(x){paste("'", x, "'", sep="")}), collapse=", ")
@@ -160,7 +162,7 @@ renderLineChart <- function(div_id,
                                "animation:true,",
                                "animation:false,"),
 
-                        "yAxis:{type: 'value',scale: true, name:", ifelse(is.null(axis.y.name), 'null', paste("'", axis.y.name, "'", sep="")), ", axisLabel:{rotate:",rotate.axis.y,",textStyle:{fontSize:", font.size.axis.y, "}}}, ",
+                        "yAxis:{type: 'value',scale: ",scale,", name:", ifelse(is.null(axis.y.name), 'null', paste("'", axis.y.name, "'", sep="")), ", axisLabel:{rotate:",rotate.axis.y,",textStyle:{fontSize:", font.size.axis.y, "}}}, ",
                         "xAxis:{type:'category', name:", ifelse(is.null(axis.x.name), 'null', paste("'", axis.x.name, "'", sep="")), ", boundaryGap: false, axisLabel:{rotate:", rotate.axis.x, ",textStyle:{fontSize:", font.size.axis.x, "}}, data:",
                         xaxis_name,
                         "}, series:[",
