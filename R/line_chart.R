@@ -15,7 +15,7 @@ renderLineChart <- function(div_id,
                             show.slider.axis.x = FALSE, show.slider.axis.y = FALSE,
                             animation = TRUE,
                             running_in_shiny = TRUE,
-							scale = TRUE){
+							scale_flag = TRUE){
 
   data <- isolate(data)
 
@@ -23,7 +23,7 @@ renderLineChart <- function(div_id,
 
   # Check logical variables (whether they're logical)
   .check_logical(c('stack_plot', 'show.tools', 'show.legend', 'animation',
-                   'show.slider.axis.x', 'show.slider.axis.y', 'running_in_shiny','scale'))
+                   'show.slider.axis.x', 'show.slider.axis.y', 'running_in_shiny','scale_flag'))
 
   # check the type of line.width
   if((class(line.width) %in% c("numeric", "integer")) == FALSE){
@@ -161,10 +161,7 @@ renderLineChart <- function(div_id,
                         ifelse(animation,
                                "animation:true,",
                                "animation:false,"),
-                        "yAxis:{type: 'value',
-						scale:",scale,",
-						name:", ifelse(is.null(axis.y.name), 'null', paste("'", axis.y.name, "'", sep="")), ",
-						axisLabel:{rotate:",rotate.axis.y,",textStyle:{fontSize:", font.size.axis.y, "}}}, ",
+                        "yAxis:{type: 'value', scale:",scale_flag,", name:", ifelse(is.null(axis.y.name), 'null', paste("'", axis.y.name, "'", sep="")), ",axisLabel:{rotate:",rotate.axis.y,",textStyle:{fontSize:", font.size.axis.y, "}}}, ",
                         "xAxis:{type:'category', name:", ifelse(is.null(axis.x.name), 'null', paste("'", axis.x.name, "'", sep="")), ", boundaryGap: false, axisLabel:{rotate:", rotate.axis.x, ",textStyle:{fontSize:", font.size.axis.x, "}}, data:",
                         xaxis_name,
                         "}, series:[",
